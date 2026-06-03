@@ -2,16 +2,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "LyricFloater",
+    name: "Floaty",
     platforms: [
         .macOS(.v13)
     ],
     products: [
-        .executable(name: "LyricFloater", targets: ["LyricFloater"])
+        .executable(name: "Floaty", targets: ["Floaty"])
     ],
     targets: [
         .executableTarget(
-            name: "LyricFloater"
+            name: "Floaty"
         )
     ]
 )

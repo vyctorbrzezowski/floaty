@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PACKAGE_DIR="$ROOT"
-APP_NAME="LyricFloater"
+APP_NAME="Floaty"
 APP_DIR="$ROOT/outputs/$APP_NAME.app"
 CONTENTS_DIR="$APP_DIR/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
@@ -19,11 +19,6 @@ done
 
 if pgrep -x "SpotifyLyricsPiP" >/dev/null 2>&1; then
   pkill -x "SpotifyLyricsPiP" || true
-  sleep 0.3
-fi
-
-if pgrep -x "Droppie" >/dev/null 2>&1; then
-  pkill -x "Droppie" || true
   sleep 0.3
 fi
 
@@ -48,13 +43,13 @@ cat > "$CONTENTS_DIR/Info.plist" <<'PLIST'
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
   <key>CFBundleExecutable</key>
-  <string>LyricFloater</string>
+  <string>Floaty</string>
   <key>CFBundleIdentifier</key>
-  <string>com.vyctorbrzezowski.lyricfloater</string>
+  <string>com.vyctorbrzezowski.floaty</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundleName</key>
-  <string>Lyric Floater</string>
+  <string>Floaty</string>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>

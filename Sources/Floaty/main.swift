@@ -3,12 +3,12 @@ import Foundation
 import ImageIO
 import SwiftUI
 
-private let bundleIdentifier = "com.vyctorbrzezowski.lyricfloater"
-private let windowAutosaveName = "LyricFloaterWindow"
+private let bundleIdentifier = "com.vyctorbrzezowski.floaty"
+private let windowAutosaveName = "FloatyWindow"
 
 @main
 @MainActor
-struct LyricFloaterMain {
+struct FloatyMain {
     private static var retainedDelegate: AppDelegate?
 
     static func main() {
@@ -53,7 +53,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             defer: false
         )
 
-        panel.title = "Lyric Floater"
+        panel.title = "Floaty"
         panel.identifier = NSUserInterfaceItemIdentifier(bundleIdentifier)
         panel.level = .floating
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
@@ -80,7 +80,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let appMenuItem = NSMenuItem()
         let appMenu = NSMenu()
         appMenu.addItem(
-            withTitle: "Quit Lyric Floater",
+            withTitle: "Quit Floaty",
             action: #selector(NSApplication.terminate(_:)),
             keyEquivalent: "q"
         )
@@ -425,7 +425,7 @@ actor ArtworkProvider {
     func fetchArtwork(url: URL) async throws -> ArtworkPayload {
         var request = URLRequest(url: url)
         request.timeoutInterval = 8
-        request.setValue("LyricFloater/1.0 (personal macOS app)", forHTTPHeaderField: "User-Agent")
+        request.setValue("Floaty/0.1.0 (personal macOS app)", forHTTPHeaderField: "User-Agent")
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, (200..<300).contains(httpResponse.statusCode) else {
@@ -541,7 +541,7 @@ actor LyricsProvider {
 
         var request = URLRequest(url: components.url!)
         request.timeoutInterval = 8
-        request.setValue("LyricFloater/1.0 (personal macOS app)", forHTTPHeaderField: "User-Agent")
+        request.setValue("Floaty/0.1.0 (personal macOS app)", forHTTPHeaderField: "User-Agent")
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, (200..<300).contains(httpResponse.statusCode) else {

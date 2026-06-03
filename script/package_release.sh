@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VERSION="${1:-0.1.0}"
-APP_NAME="LyricFloater"
+APP_NAME="Floaty"
 ZIP_PATH="$ROOT/outputs/$APP_NAME-v$VERSION.zip"
 SHA_PATH="$ROOT/outputs/$APP_NAME-v$VERSION.sha256"
 

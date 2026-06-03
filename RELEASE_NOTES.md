@@ -1,4 +1,4 @@
-# Lyric Floater 0.1.0
+# Floaty 0.1.0
 
 Initial public release.
 
