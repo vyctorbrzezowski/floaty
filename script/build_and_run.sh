@@ -17,15 +17,12 @@ for arg in "$@"; do
   esac
 done
 
-if pgrep -x "SpotifyLyricsPiP" >/dev/null 2>&1; then
-  pkill -x "SpotifyLyricsPiP" || true
-  sleep 0.3
-fi
-
-if pgrep -x "$APP_NAME" >/dev/null 2>&1; then
-  pkill -x "$APP_NAME" || true
-  sleep 0.3
-fi
+for process_name in "SpotifyLyricsPiP" "LyricFloater" "Droppie" "$APP_NAME"; do
+  if pgrep -x "$process_name" >/dev/null 2>&1; then
+    pkill -x "$process_name" || true
+    sleep 0.3
+  fi
+done
 
 cd "$PACKAGE_DIR"
 swift build -c release
@@ -58,6 +55,8 @@ cat > "$CONTENTS_DIR/Info.plist" <<'PLIST'
   <string>1</string>
   <key>LSApplicationCategoryType</key>
   <string>public.app-category.music</string>
+  <key>LSUIElement</key>
+  <true/>
   <key>LSMinimumSystemVersion</key>
   <string>13.0</string>
   <key>NSAppleEventsUsageDescription</key>

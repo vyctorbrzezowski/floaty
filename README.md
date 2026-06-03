@@ -27,16 +27,18 @@ Good for:
 - Spotify lyrics in a floating macOS window
 - Picture-in-picture lyrics while working
 - Always-on-top synced lyrics
+- Menu bar lyrics companion with no Dock icon
 - Minimal lyrics overlay with album artwork colors
 
 ## Features
 
 - Always-on-top lyrics window that can join all Spaces and full-screen apps.
+- Menu bar app: no Dock icon.
 - Draggable, resizable, borderless native macOS panel.
 - Album artwork blur/tint background plus a neutral mode.
 - Hover-only tweak controls for background and text size.
 - Synced Spotify lyrics when available, with a plain-lyrics fallback.
-- Responsive typography, top/bottom fade, and saved window position.
+- Responsive typography, full-line wrapping, top/bottom fade, and saved window position.
 - Native Swift, AppKit, and SwiftUI implementation.
 
 ## Install
@@ -45,7 +47,7 @@ Download `Floaty-v0.1.0.zip` from the latest release, unzip it, and open `Floaty
 
 macOS may ask for permission to let Floaty control Spotify. Allow it. The app uses that permission only to read the current track, artist, album, duration, playback position, playback state, and artwork URL.
 
-If macOS blocks the unsigned app, open it from Finder with Control-click -> Open.
+If macOS blocks the unsigned app, open it from Finder with Control-click -> Open. Floaty lives in the menu bar; use the music note icon to show, hide, or quit the floating window.
 
 ## Build From Source
 
@@ -88,4 +90,4 @@ Floaty has no analytics and stores no listening history. It makes network reques
 
 ## Search Terms
 
-Spotify lyrics picture-in-picture, macOS Spotify lyrics, floating lyrics window, synced lyrics overlay, SwiftUI lyrics app, always-on-top lyrics for Spotify.
+Spotify lyrics picture-in-picture, macOS Spotify lyrics, floating lyrics window, menu bar lyrics app, synced lyrics overlay, SwiftUI lyrics app, always-on-top lyrics for Spotify.

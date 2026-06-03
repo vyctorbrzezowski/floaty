@@ -16,7 +16,7 @@ struct FloatyMain {
         retainedDelegate = delegate
 
         let app = NSApplication.shared
-        app.setActivationPolicy(.regular)
+        app.setActivationPolicy(.accessory)
         app.delegate = delegate
         app.run()
     }
@@ -25,17 +25,60 @@ struct FloatyMain {
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: FloatingLyricsPanel?
+    private var statusItem: NSStatusItem?
     private let viewModel = LyricsViewModel()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.mainMenu = makeMenu()
+        createStatusItem()
         createPanel()
         viewModel.start()
-        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        true
+        false
+    }
+
+    @objc private func showWindow() {
+        if panel == nil { createPanel() }
+        panel?.orderFrontRegardless()
+    }
+
+    @objc private func hideWindow() {
+        panel?.orderOut(nil)
+    }
+
+    @objc private func quit() {
+        NSApp.terminate(nil)
+    }
+
+    private func createStatusItem() {
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        if let button = item.button {
+            button.image = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Floaty")
+            button.image?.isTemplate = true
+            button.imagePosition = .imageOnly
+            button.toolTip = "Floaty"
+        }
+
+        let menu = NSMenu()
+        let showItem = NSMenuItem(title: "Show Window", action: #selector(showWindow), keyEquivalent: "")
+        showItem.target = self
+        menu.addItem(showItem)
+
+        let hideItem = NSMenuItem(title: "Hide Window", action: #selector(hideWindow), keyEquivalent: "")
+        hideItem.target = self
+        menu.addItem(hideItem)
+
+        menu.addItem(.separator())
+
+        let quitItem = NSMenuItem(title: "Quit Floaty", action: #selector(quit), keyEquivalent: "q")
+        quitItem.target = self
+        menu.addItem(quitItem)
+
+        item.menu = menu
+
+        statusItem = item
     }
 
     private func createPanel() {
@@ -688,7 +731,7 @@ struct LyricsPiPView: View {
             let backgroundMode = BackgroundMode(rawValue: backgroundModeRaw) ?? .album
             let textTuning = TextTuning(rawValue: textTuningRaw) ?? .balanced
             let metrics = LyricsMetrics(size: proxy.size, textScale: textTuning.multiplier)
-            let lines = model.displayLines(at: now, maxLines: metrics.maxLines)
+            let lines = metrics.fittingDisplayLines(model.displayLines(at: now, maxLines: metrics.maxLines))
 
             ZStack(alignment: .topLeading) {
                 PiPBackground(
@@ -803,7 +846,7 @@ struct LyricsPiPView: View {
                     Text(line.text)
                         .font(.system(size: metrics.fontSize, weight: .heavy, design: .rounded))
                         .foregroundStyle(line.isActive ? Color.white : Color.white.opacity(0.52))
-                        .lineLimit(metrics.lineLimit)
+                        .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .shadow(color: .black.opacity(line.isActive ? 0.28 : 0.18), radius: 8, y: 2)
@@ -997,10 +1040,6 @@ struct LyricsMetrics {
         min(14, max(8, size.width * 0.018))
     }
 
-    var lineLimit: Int {
-        2
-    }
-
     var maxLines: Int {
         let usableHeight = max(40, size.height - verticalPadding * 2)
         let wrapFactor: CGFloat
@@ -1013,5 +1052,48 @@ struct LyricsMetrics {
         }
         let rowHeight = fontSize * wrapFactor + rowSpacing
         return max(1, min(8, Int(usableHeight / rowHeight)))
+    }
+
+    func fittingDisplayLines(_ lines: [DisplayLine]) -> [DisplayLine] {
+        guard lines.count > 1 else { return lines }
+
+        var fitted = lines
+        while fitted.count > 1, estimatedVisualRows(for: fitted) > visualRowBudget {
+            let activeIndex = fitted.firstIndex(where: \.isActive) ?? 0
+            let leadingCount = activeIndex
+            let trailingCount = fitted.count - activeIndex - 1
+
+            if leadingCount >= trailingCount, leadingCount > 0 {
+                fitted.removeFirst()
+            } else if trailingCount > 0 {
+                fitted.removeLast()
+            } else {
+                break
+            }
+        }
+
+        return fitted
+    }
+
+    private var visualRowBudget: Int {
+        let usableHeight = max(40, size.height - verticalPadding * 2)
+        let lineHeight = max(18, fontSize * 1.14)
+        return max(1, Int((usableHeight + rowSpacing) / (lineHeight + rowSpacing)))
+    }
+
+    private func estimatedVisualRows(for lines: [DisplayLine]) -> Int {
+        let textRows = lines.reduce(0) { total, line in
+            total + estimatedTextRows(for: line.text)
+        }
+        let spacingRows = CGFloat(max(0, lines.count - 1)) * rowSpacing / max(18, fontSize * 1.14)
+        return Int(ceil(CGFloat(textRows) + spacingRows))
+    }
+
+    private func estimatedTextRows(for text: String) -> Int {
+        let normalizedLength = max(1, text.trimmingCharacters(in: .whitespacesAndNewlines).count)
+        let availableWidth = max(80, size.width - horizontalPadding * 2)
+        let averageGlyphWidth = max(7, fontSize * 0.55)
+        let charactersPerRow = max(8, Int(availableWidth / averageGlyphWidth))
+        return max(1, Int(ceil(Double(normalizedLength) / Double(charactersPerRow))))
     }
 }
