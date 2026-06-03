@@ -6,8 +6,6 @@ Floaty stays above your other windows, follows the current Spotify track, and re
 
 Built after one too many Foo Fighters listening sessions. It floats, follows the song, and stays out of the way.
 
-> Unofficial project. Not affiliated with Spotify, Foo Fighters, Musixmatch, or LRCLIB.
-
 ## Screenshots
 
 | View | Screenshot |
