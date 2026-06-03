@@ -7,5 +7,5 @@ Initial public release.
 - Synced lyrics through LRCLIB with plain-lyrics fallback.
 - Album artwork blur/tint background and neutral mode.
 - Hover tweak panel for background and text size.
-- Responsive typography, full-line wrapping, top/bottom fade, and saved window position.
+- Responsive typography, stable lyric rows, top/bottom fade, and saved window position.
 - Native SwiftPM/AppKit/SwiftUI build with ad-hoc local signing.

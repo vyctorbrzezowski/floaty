@@ -847,8 +847,10 @@ struct LyricsPiPView: View {
                         .font(.system(size: metrics.fontSize, weight: .heavy, design: .rounded))
                         .foregroundStyle(line.isActive ? Color.white : Color.white.opacity(0.52))
                         .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineLimit(metrics.slotLineLimit)
+                        .minimumScaleFactor(0.82)
+                        .allowsTightening(true)
+                        .frame(maxWidth: .infinity, minHeight: metrics.lyricSlotHeight, maxHeight: metrics.lyricSlotHeight, alignment: .topLeading)
                         .shadow(color: .black.opacity(line.isActive ? 0.28 : 0.18), radius: 8, y: 2)
                 }
                 Spacer(minLength: 0)
@@ -1032,6 +1034,18 @@ struct LyricsMetrics {
         min(18, max(6, fontSize * 0.26))
     }
 
+    var slotLineLimit: Int {
+        2
+    }
+
+    var textLineHeight: CGFloat {
+        max(18, fontSize * 1.08)
+    }
+
+    var lyricSlotHeight: CGFloat {
+        textLineHeight * CGFloat(slotLineLimit)
+    }
+
     var cornerRadius: CGFloat {
         min(22, max(13, size.width * 0.025))
     }
@@ -1042,15 +1056,7 @@ struct LyricsMetrics {
 
     var maxLines: Int {
         let usableHeight = max(40, size.height - verticalPadding * 2)
-        let wrapFactor: CGFloat
-        if size.width < 420 {
-            wrapFactor = 1.95
-        } else if size.width < 620 {
-            wrapFactor = 1.55
-        } else {
-            wrapFactor = 1.28
-        }
-        let rowHeight = fontSize * wrapFactor + rowSpacing
+        let rowHeight = lyricSlotHeight + rowSpacing
         return max(1, min(8, Int(usableHeight / rowHeight)))
     }
 
@@ -1058,7 +1064,7 @@ struct LyricsMetrics {
         guard lines.count > 1 else { return lines }
 
         var fitted = lines
-        while fitted.count > 1, estimatedVisualRows(for: fitted) > visualRowBudget {
+        while fitted.count > 1, estimatedHeight(for: fitted) > usableTextHeight {
             let activeIndex = fitted.firstIndex(where: \.isActive) ?? 0
             let leadingCount = activeIndex
             let trailingCount = fitted.count - activeIndex - 1
@@ -1075,18 +1081,20 @@ struct LyricsMetrics {
         return fitted
     }
 
-    private var visualRowBudget: Int {
-        let usableHeight = max(40, size.height - verticalPadding * 2)
-        let lineHeight = max(18, fontSize * 1.14)
-        return max(1, Int((usableHeight + rowSpacing) / (lineHeight + rowSpacing)))
+    private var usableTextHeight: CGFloat {
+        max(40, size.height - verticalPadding * 2)
     }
 
-    private func estimatedVisualRows(for lines: [DisplayLine]) -> Int {
+    private var estimatedLineHeight: CGFloat {
+        textLineHeight
+    }
+
+    private func estimatedHeight(for lines: [DisplayLine]) -> CGFloat {
         let textRows = lines.reduce(0) { total, line in
             total + estimatedTextRows(for: line.text)
         }
-        let spacingRows = CGFloat(max(0, lines.count - 1)) * rowSpacing / max(18, fontSize * 1.14)
-        return Int(ceil(CGFloat(textRows) + spacingRows))
+
+        return CGFloat(textRows) * estimatedLineHeight + CGFloat(max(0, lines.count - 1)) * rowSpacing
     }
 
     private func estimatedTextRows(for text: String) -> Int {

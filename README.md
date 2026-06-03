@@ -36,12 +36,12 @@ Good for:
 - Album artwork blur/tint background plus a neutral mode.
 - Hover-only tweak controls for background and text size.
 - Synced Spotify lyrics when available, with a plain-lyrics fallback.
-- Responsive typography, full-line wrapping, top/bottom fade, and saved window position.
+- Responsive typography, stable lyric rows, top/bottom fade, and saved window position.
 - Native Swift, AppKit, and SwiftUI implementation.
 
 ## Install
 
-Download `Floaty-v0.1.0.zip` from the latest release, unzip it, and open `Floaty.app`.
+Download `Floaty-v0.1.0.zip` from the latest release, unzip it, and move `Floaty.app` to `/Applications`.
 
 macOS may ask for permission to let Floaty control Spotify. Allow it. The app uses that permission only to read the current track, artist, album, duration, playback position, playback state, and artwork URL.
 
