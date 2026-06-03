@@ -2,9 +2,9 @@
 
 A tiny macOS picture-in-picture lyrics window for Spotify.
 
-Floaty stays above your other windows, follows the current Spotify track, and renders synced lyrics in a draggable, resizable floating panel. It is intentionally not a Spotify patch: it reads Spotify's macOS scripting surface and draws its own native window, so it is much less likely to break when Spotify updates.
+Floaty stays above your other windows, follows the current Spotify track, and renders synced lyrics in a draggable, resizable floating panel. It reads Spotify's macOS scripting surface and draws its own native window, so it does not depend on Spotify's internal UI.
 
-Built after one too many Foo Fighters listening sessions. It floats, it follows the song, and it tries very hard not to be in the way.
+Built after one too many Foo Fighters listening sessions. It floats, follows the song, and stays out of the way.
 
 > Unofficial project. Not affiliated with Spotify, Foo Fighters, Musixmatch, or LRCLIB.
 
@@ -12,11 +12,11 @@ Built after one too many Foo Fighters listening sessions. It floats, it follows 
 
 | View | Screenshot |
 | --- | --- |
-| Album-tinted Spotify lyrics | <img src="https://karma-pocket-k6kv.here.now/droppie-2026-06-03T00-28-26Z.png" width="520" alt="Floaty showing album-tinted Spotify lyrics in a macOS picture-in-picture window"> |
-| Compact floating lyrics panel | <img src="https://emerald-lotus-apye.here.now/droppie-2026-06-03T00-28-20Z.png" width="520" alt="Compact Floaty lyrics window for Spotify on macOS"> |
-| Large picture-in-picture lyrics | <img src="https://eternal-rocket-565s.here.now/droppie-2026-06-03T00-25-35Z.png" width="520" alt="Large Floaty picture-in-picture lyrics window with synced lyrics"> |
-| Hover tweaks | <img src="https://snowy-sparrow-v28e.here.now/droppie-2026-06-03T00-25-26Z.png" width="520" alt="Floaty hover controls for album background, neutral mode, and text size"> |
-| Neutral mode | <img src="https://coral-quinoa-2z7g.here.now/droppie-2026-06-03T00-25-25Z.png" width="520" alt="Floaty neutral mode lyrics window without album colors"> |
+| Neutral dark mode | <img src="https://karma-pocket-k6kv.here.now/droppie-2026-06-03T00-28-26Z.png" width="520" alt="Floaty in neutral dark mode over a forest desktop wallpaper, showing wrapped Spotify lyrics"> |
+| Album blur mode | <img src="https://emerald-lotus-apye.here.now/droppie-2026-06-03T00-28-20Z.png" width="520" alt="Floaty using blurred album artwork colors behind synced Spotify lyrics"> |
+| Compact window | <img src="https://eternal-rocket-565s.here.now/droppie-2026-06-03T00-25-35Z.png" width="520" alt="Small Floaty picture-in-picture lyrics window with two wrapped lyric lines"> |
+| Hover tweaks | <img src="https://snowy-sparrow-v28e.here.now/droppie-2026-06-03T00-25-26Z.png" width="520" alt="Floaty hover menu with Album, Neutral, and small, medium, large text controls"> |
+| Small album-tinted window | <img src="https://coral-quinoa-2z7g.here.now/droppie-2026-06-03T00-25-25Z.png" width="520" alt="Compact album-tinted Floaty lyrics window with the hover menu button visible"> |
 
 ## Why Floaty?
 
