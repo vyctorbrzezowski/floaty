@@ -11,7 +11,10 @@ SHA_PATH="$ROOT/outputs/$APP_NAME-v$VERSION.sha256"
 
 rm -f "$ZIP_PATH" "$SHA_PATH"
 /usr/bin/ditto -c -k --keepParent "$ROOT/outputs/$APP_NAME.app" "$ZIP_PATH"
-shasum -a 256 "$ZIP_PATH" > "$SHA_PATH"
+(
+  cd "$ROOT/outputs"
+  shasum -a 256 "$APP_NAME-v$VERSION.zip" > "$APP_NAME-v$VERSION.sha256"
+)
 
 echo "$ZIP_PATH"
 cat "$SHA_PATH"
